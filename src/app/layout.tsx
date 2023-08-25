@@ -1,9 +1,10 @@
 import Sidebar from "@/components/layouts/Sidebar";
 import "./globals.css";
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Epilogue } from "next/font/google";
+import Header from "@/components/layouts/Header";
 
-const inter = Inter({ subsets: ["latin"] });
+const epilogue = Epilogue({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
 	title: "Create Next App",
@@ -17,7 +18,7 @@ export default function RootLayout({
 }) {
 	return (
 		<html lang="en">
-			<body className={inter.className}>
+			<body className={epilogue.className}>
 				<main>
 					<div className="border-t">
 						<div className="bg-background">
@@ -27,7 +28,7 @@ export default function RootLayout({
 								</div>
 								<div className="col-span-3 overflow-auto lg:col-span-5 lg:border-l w-[82%]">
 									<div className="px-6 py-6 lg:px-8">
-										<div>Header</div>
+										<Header />
 										{children}
 									</div>
 								</div>
