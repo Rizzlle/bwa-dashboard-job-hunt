@@ -15,7 +15,7 @@ const FieldInput: FC<FieldInputProps> = ({ children, title, subtitle }) => {
 					<div className="font-semibold">{title}</div>
 					<div className="text-gray-400 w-80">{subtitle}</div>
 				</div>
-				{children}
+				<div className="w-[65%]">{children}</div>
 			</div>
 			<Separator />
 		</>
