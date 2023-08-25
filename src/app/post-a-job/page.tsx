@@ -21,6 +21,14 @@ import FieldInput from "@/components/organisms/FieldInput";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { JOB_TYPES } from "@/constants";
 import { Button } from "@/components/ui/button";
+import {
+	Select,
+	SelectContent,
+	SelectItem,
+	SelectTrigger,
+	SelectValue,
+} from "@/components/ui/select";
+import InputSkills from "@/components/organisms/InputSkills";
 
 interface PostJobPageProps {}
 
@@ -82,8 +90,6 @@ const PostJobPage: FC<PostJobPageProps> = ({}) => {
 						/>
 					</FieldInput>
 
-					<Separator />
-
 					<FieldInput
 						title="Type of Employment"
 						subtitle="You can select multiple type of employment"
@@ -123,8 +129,6 @@ const PostJobPage: FC<PostJobPageProps> = ({}) => {
 							)}
 						/>
 					</FieldInput>
-
-					<Separator />
 
 					<FieldInput
 						title="Salary"
@@ -167,7 +171,49 @@ const PostJobPage: FC<PostJobPageProps> = ({}) => {
 						</div>
 					</FieldInput>
 
-					<Separator />
+					<FieldInput
+						title="Categories"
+						subtitle="You can select job categories"
+					>
+						<FormField
+							control={form.control}
+							name="categoryId"
+							render={({ field }) => (
+								<FormItem>
+									<FormLabel>Select Job Categories</FormLabel>
+									<Select
+										onValueChange={field.onChange}
+										defaultValue={field.value}
+									>
+										<FormControl>
+											<SelectTrigger className="w-[450px]">
+												<SelectValue placeholder="Select Job Categories" />
+											</SelectTrigger>
+										</FormControl>
+										<SelectContent>
+											<SelectItem value="m@example.com">
+												m@example.com
+											</SelectItem>
+											<SelectItem value="m@google.com">
+												m@google.com
+											</SelectItem>
+											<SelectItem value="m@support.com">
+												m@support.com
+											</SelectItem>
+										</SelectContent>
+									</Select>
+									<FormMessage />
+								</FormItem>
+							)}
+						/>
+					</FieldInput>
+
+					<FieldInput
+						title="Required Skills"
+						subtitle="Add required skills for the job"
+					>
+						<InputSkills form={form} />
+					</FieldInput>
 
 					<div className="flex justify-end">
 						<Button type="submit" size="lg">
