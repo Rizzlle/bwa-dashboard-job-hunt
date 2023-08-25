@@ -1,12 +1,11 @@
+import { JOB_TYPES } from "@/constants";
 import { z } from "zod";
 
 export const jobFormSchema = z.object({
-	title: z
+	roles: z
 		.string({ required_error: "Job Title is required" })
 		.min(2, { message: "Job Title must be at least 2 characters" }),
-	jobType: z.string({
-		required_error: "You need to select a job type",
-	}),
+	jobType: z.enum(JOB_TYPES, { required_error: "Job Type is required" }),
 	salaryFrom: z.string({ required_error: "Salary From must be filled" }),
 	salaryTo: z.string({ required_error: "Salary To must be filled" }),
 	categoryId: z.string({ required_error: "You need to select a category" }),
