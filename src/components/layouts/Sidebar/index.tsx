@@ -1,3 +1,5 @@
+"use client";
+
 import { Button } from "@/components/ui/button";
 import React, { FC } from "react";
 
@@ -10,10 +12,13 @@ import {
 	AiOutlineCalendar,
 	AiOutlineLogout,
 } from "react-icons/ai";
+import { useRouter } from "next/navigation";
 
 interface SidebarProps {}
 
 const Sidebar: FC<SidebarProps> = ({}) => {
+	const router = useRouter();
+
 	return (
 		<div className="pb-12 min-h-screen">
 			<div className="space-y-4 py-4">
@@ -23,6 +28,7 @@ const Sidebar: FC<SidebarProps> = ({}) => {
 					</h2>
 					<div className="space-y-3">
 						<Button
+							onClick={() => router.push("/")}
 							variant={"ghost"}
 							className="w-full justify-start rounded-none hover:text-primary"
 						>
@@ -51,6 +57,7 @@ const Sidebar: FC<SidebarProps> = ({}) => {
 							All Applicants
 						</Button>
 						<Button
+							onClick={() => router.push("/job-listing")}
 							variant={"ghost"}
 							className="w-full justify-start rounded-none hover:text-primary"
 						>
