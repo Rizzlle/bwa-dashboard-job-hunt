@@ -79,20 +79,23 @@ const Sidebar: FC<SidebarProps> = ({}) => {
 					<h2 className="mb-2 px-4 text-lg font-semibold">
 						Settings
 					</h2>
-					<Button
-						variant={"ghost"}
-						className="w-full justify-start rounded-none hover:text-primary"
-					>
-						<BsGear className="mr-2 text-lg" />
-						Settings
-					</Button>
-					<Button
-						variant={"ghost"}
-						className="w-full text-red-500 hover:bg-red-200 hover:text-red-500 justify-start rounded-none"
-					>
-						<AiOutlineLogout className="mr-2 text-lg" />
-						Logout
-					</Button>
+					<div className="space-y-3">
+						<Button
+							variant={"ghost"}
+							className="w-full justify-start rounded-none hover:text-primary"
+							onClick={() => router.push("/settings")}
+						>
+							<BsGear className="mr-2 text-lg" />
+							Settings
+						</Button>
+						<Button
+							variant={"ghost"}
+							className="w-full text-red-500 hover:bg-red-200 hover:text-red-500 justify-start rounded-none"
+						>
+							<AiOutlineLogout className="mr-2 text-lg" />
+							Logout
+						</Button>
+					</div>
 				</div>
 			</div>
 		</div>
