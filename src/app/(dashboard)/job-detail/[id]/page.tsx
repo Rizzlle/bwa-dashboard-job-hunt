@@ -1,14 +1,40 @@
 import { ArrowLeftIcon } from "lucide-react";
 import Link from "next/link";
-import React, { FC } from "react";
+import { FC } from "react";
 
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import Applicants from "@/components/organisms/Applicants";
 import JobDetail from "@/components/organisms/JobDetail";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import prisma from "../../../../../lib/prisma";
 
-interface JobDetailPageProps {}
+type paramsType = {
+	id: string;
+};
+interface JobDetailPageProps {
+	params: paramsType;
+}
 
-const JobDetailPage: FC<JobDetailPageProps> = ({}) => {
+async function getDetailJob(id: string) {
+	const job = await prisma.job.findFirst({
+		where: {
+			id: id,
+		},
+		include: {
+			applicant: {
+				include: {
+					user: true,
+				},
+			},
+			CategoryJob: true,
+		},
+	});
+
+	return job;
+}
+
+const JobDetailPage: FC<JobDetailPageProps> = async ({ params }) => {
+	const job = await getDetailJob(params.id);
+
 	return (
 		<div>
 			<div className="inline-flex items-center gap-5 mb-5">
@@ -19,9 +45,12 @@ const JobDetailPage: FC<JobDetailPageProps> = ({}) => {
 				</div>
 				<div>
 					<div className="text-2xl font-semibold mb-1">
-						Brand Designer
+						{job?.roles}
 					</div>
-					<div>Design . Full-Time . 1/10 Hired</div>
+					<div>
+						{job?.CategoryJob?.name} . {job?.jobType} .{" "}
+						{job?.applicants}/{job?.needs} Hired
+					</div>
 				</div>
 			</div>
 
@@ -31,10 +60,10 @@ const JobDetailPage: FC<JobDetailPageProps> = ({}) => {
 					<TabsTrigger value="jobDetails">Job Details</TabsTrigger>
 				</TabsList>
 				<TabsContent value="applicants">
-					<Applicants />
+					<Applicants applicants={job?.applicant} />
 				</TabsContent>
 				<TabsContent value="jobDetails">
-					<JobDetail />
+					<JobDetail detail={job} />
 				</TabsContent>
 			</Tabs>
 		</div>

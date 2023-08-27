@@ -32,9 +32,23 @@ import CKEditor from "@/components/organisms/CKEditor";
 import InputBenefits from "@/components/organisms/InputBenefits";
 import { Button } from "@/components/ui/button";
 
+import useSWR from "swr";
+import { fetcher } from "@/lib/utils";
+import { CategoryJob } from "@prisma/client";
+import { useSession } from "next-auth/react";
+
+import moment from "moment";
+import { useRouter } from "next/navigation";
+import { useToast } from "@/components/ui/use-toast";
+
 interface PostJobPageProps {}
 
 const PostJobPage: FC<PostJobPageProps> = ({}) => {
+	const { data } = useSWR<CategoryJob[]>("/api/job/categories", fetcher);
+
+	const { data: session } = useSession();
+	const { toast } = useToast();
+
 	const [editorLoaded, setEditorLoaded] = useState<boolean>(false);
 
 	const form = useForm<z.infer<typeof jobFormSchema>>({
@@ -44,8 +58,43 @@ const PostJobPage: FC<PostJobPageProps> = ({}) => {
 		},
 	});
 
-	const onSubmit = (val: z.infer<typeof jobFormSchema>) => {
-		console.log(val);
+	const router = useRouter();
+
+	const onSubmit = async (val: z.infer<typeof jobFormSchema>) => {
+		try {
+			const body: any = {
+				applicants: 0,
+				benefits: val.benefits,
+				categoryId: val.categoryId,
+				companyId: session?.user.id!!,
+				datePosted: moment().toDate(),
+				description: val.jobDescription,
+				dueDate: moment().add(1, "M").toDate(),
+				jobType: val.jobType,
+				needs: 20,
+				niceToHaves: val.niceToHaves,
+				requiredSkills: val.requiredSkills,
+				responsibility: val.responsibility,
+				roles: val.roles,
+				salaryFrom: val.salaryFrom,
+				salaryTo: val.salaryTo,
+				whoYouAre: val.whoYouAre,
+			};
+
+			await fetch("/api/job", {
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify(body),
+			});
+
+			await router.push("/job-listings");
+		} catch (error) {
+			toast({
+				title: "Error",
+				description: "Please try again",
+			});
+			console.log(error);
+		}
 	};
 
 	useEffect(() => {
@@ -199,15 +248,14 @@ const PostJobPage: FC<PostJobPageProps> = ({}) => {
 											</SelectTrigger>
 										</FormControl>
 										<SelectContent>
-											<SelectItem value="m@example.com">
-												m@example.com
-											</SelectItem>
-											<SelectItem value="m@google.com">
-												m@google.com
-											</SelectItem>
-											<SelectItem value="m@support.com">
-												m@support.com
-											</SelectItem>
+											{data?.map((item: CategoryJob) => (
+												<SelectItem
+													key={item.id}
+													value={item.id}
+												>
+													{item.name}
+												</SelectItem>
+											))}
 										</SelectContent>
 									</Select>
 									<FormMessage />
