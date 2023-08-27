@@ -20,6 +20,8 @@ import prisma from "../../../../lib/prisma";
 
 interface JobListingsPageProps {}
 
+export const revalidate = 0;
+
 async function getDataJobs() {
 	const session = await getServerSession(authOptions);
 
