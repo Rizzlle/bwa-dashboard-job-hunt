@@ -1,0 +1,111 @@
+generator client {
+    provider = "prisma-client-js"
+}
+
+datasource db {
+    provider = "postgresql"
+    url = env("DATABASE_URL")
+}
+
+model CategoryJob {
+    id      String @id @default(cuid())
+    name    String
+    Job     Job[]
+}
+
+model Industry {
+    id      String @id @default(cuid())
+    name    String
+}
+
+model Company {
+    id          String @id @default(cuid())
+    name        String
+    password    String
+    email       String @unique
+    CompanySocialMedia CompanySocialMedia[]
+    CompanyTeam CompanyTeam[]
+    Companyoverview Companyoverview[]
+    Job     Job[]
+}
+
+model CompanySocialMedia {
+    id          String @id @default(cuid())
+    instagram   String
+    twitter     String
+    facebook    String
+    linkedin    String
+    youtube     String
+    companyId   String?
+    Company     Company? @relation(fields: [companyId], references: [id])
+}
+
+model CompanyTeam {
+    id          String @id @default(cuid())
+    name        String
+    position    String
+    instagram   String
+    linkedin    String
+    companyId   String?
+    Company     Company? @relation(fields: [companyId], references: [id])
+}
+
+model Companyoverview {
+    id          String @id @default(cuid())
+    image       String
+    website     String
+    name        String
+    location    String
+    employee    String
+    industry    String
+    dateFounded DateTime
+    techStack   String[]
+    description String
+    companyId   String?
+    Company Company? @relation(fields: [companyId], references: [id])
+}
+
+model Job {
+    id          String @id @default(cuid())
+    roles       String
+    datePosted  DateTime @default(now())
+    dueDate     DateTime
+    jobType     String
+    applicants  Int
+    needs       Int
+    salaryFrom  String
+    salaryTo    String
+    requiredSkills String[]
+    description String
+    responsibility  String
+    whoYouAre   String
+    niceToHaves String
+    benefits    Json
+    companyId   String?
+    categoryId  String?
+    CategoryJob CategoryJob? @relation(fields: [categoryId], references: [id])
+    Company     Company? @relation(fields: [companyId], references: [id])
+    applicant   Applicant[]
+}
+
+model User {
+    id          String @id @default(cuid())
+    name        String
+    password    String
+    email       String @unique
+    applicant   Applicant[]
+}
+
+model Applicant {
+    id          String @id @default(cuid())
+    userId      String?
+    user        User? @relation(fields: [userId], references: [id])
+    jobId       String?
+    job         Job? @relation(fields: [jobId], references: [id])
+    previousJobTitle    String
+    phone       String
+    linkedIn       String
+    portfolio   String
+    coverLetter String
+    resume      String
+}

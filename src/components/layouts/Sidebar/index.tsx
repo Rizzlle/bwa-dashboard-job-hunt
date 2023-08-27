@@ -13,6 +13,7 @@ import {
 	AiOutlineLogout,
 } from "react-icons/ai";
 import { useRouter } from "next/navigation";
+import { signOut } from "next-auth/react";
 
 interface SidebarProps {}
 
@@ -91,6 +92,7 @@ const Sidebar: FC<SidebarProps> = ({}) => {
 						<Button
 							variant={"ghost"}
 							className="w-full text-red-500 hover:bg-red-200 hover:text-red-500 justify-start rounded-none"
+							onClick={() => signOut()}
 						>
 							<AiOutlineLogout className="mr-2 text-lg" />
 							Logout
