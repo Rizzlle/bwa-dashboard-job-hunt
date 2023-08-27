@@ -278,7 +278,9 @@ const OverviewForm: FC<OverviewFormProps> = ({ detail }) => {
 														(item: Industry) => (
 															<SelectItem
 																key={item.id}
-																value={item.id}
+																value={
+																	item.name
+																}
 															>
 																{item.name}
 															</SelectItem>
